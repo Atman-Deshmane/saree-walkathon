@@ -21,7 +21,6 @@ export const siteContent = {
     meta: {
         title: "साडी वॉकेथॉन २०२६ | धाराशिव",
         description: "महिला सशक्तीकरण आणि आरोग्यासाठी साडी वॉकेथॉन - धाराशिव, महाराष्ट्र",
-        logoUrl: "https://placehold.co/200x80/e11d48/FFFFFF?text=Saree+Walkathon", // Updated color
         logoAlt: "साडी वॉकेथॉन लोगो"
     },
 
@@ -31,8 +30,8 @@ export const siteContent = {
     hero: {
         title: "साडी वॉकेथॉन २०२६",
         subtitle: "परंपरेचा अभिमान, आरोग्याचा सन्मान", // More punchy tagline
-        date: "२६ जानेवारी २०२६",
-        time: "सकाळी ७:०० वाजता",
+        date: "8 फेब्रुवारी २०२६",
+        time: "सकाळी 6:00 वाजता",
         place: "महात्मा गांधी मैदान, धाराशिव",
         ctaText: "आत्ताच नोंदणी करा ✨", // Added emoji
         backgroundImage: "https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=1920&q=80"

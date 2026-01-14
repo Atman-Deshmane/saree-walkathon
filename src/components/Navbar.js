@@ -28,7 +28,7 @@ export function renderNavbar() {
                     <!-- Date Badge (Hidden on mobile) -->
                     <div class="hidden md:flex items-center gap-2 bg-primary-50 px-4 py-2 rounded-full border border-primary-100">
                         <span class="text-lg">📅</span>
-                        <span class="text-primary-800 font-bold text-sm">२६ जानेवारी</span>
+                        <span class="text-primary-800 font-bold text-sm">8 फेब्रुवारी</span>
                     </div>
 
                     <a href="#registration" class="bg-primary-600 hover:bg-primary-700 text-white px-6 py-2.5 rounded-full font-bold text-sm transition-all shadow-lg hover:shadow-primary-500/30 transform hover:-translate-y-0.5">
