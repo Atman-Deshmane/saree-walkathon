@@ -92,7 +92,7 @@ export function renderFooter() {
         <!-- Creator Credits Strip -->
         <div class="bg-black py-3 text-center">
             <p class="text-white text-sm">
-                Created by- <strong>Atman</strong> and <strong>Shashanki</strong>
+                Created with ❤️ by- <strong>Atman</strong> and <strong>Shashanki Deshmane</strong>
             </p>
         </div>
         
