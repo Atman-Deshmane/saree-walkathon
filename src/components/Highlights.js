@@ -1,0 +1,65 @@
+/**
+ * ============================================
+ * HIGHLIGHTS COMPONENT
+ * ============================================
+ * Event highlights: Dhol Tasha, Yoga, Award Ceremony
+ * Special note about Mahila Mandal medal.
+ */
+
+import { siteContent } from '../data/content.js';
+
+/**
+ * Renders the Highlights section
+ * @returns {string} HTML string for highlights
+ */
+export function renderHighlights() {
+    const { highlights } = siteContent;
+
+    // Generate highlight cards
+    const highlightCards = highlights.items.map((item, index) => `
+        <div class="flex flex-col items-center text-center p-6 md:p-8">
+            <div class="w-24 h-24 md:w-32 md:h-32 bg-white rounded-full flex items-center justify-center shadow-lg mb-6 transform hover:scale-110 transition-transform duration-300">
+                <span class="text-5xl md:text-6xl">${item.icon}</span>
+            </div>
+            <h3 class="text-xl md:text-2xl font-bold text-white mb-2">${item.title}</h3>
+            <p class="text-primary-100 text-sm md:text-base">${item.description}</p>
+        </div>
+    `).join('');
+
+    return `
+        <section id="highlights" class="py-16 md:py-24 bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800 relative overflow-hidden">
+            <!-- Decorative elements -->
+            <div class="absolute top-0 left-0 w-full h-full opacity-10">
+                <div class="absolute top-10 left-10 md:top-20 md:left-20 text-6xl md:text-9xl">🥁</div>
+                <div class="absolute bottom-10 right-10 md:bottom-20 md:right-20 text-6xl md:text-9xl">🧘</div>
+            </div>
+            
+            <div class="container relative z-10">
+                <!-- Section Title -->
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+                        ${highlights.sectionTitle}
+                    </h2>
+                    <div class="w-24 h-1 bg-white/50 mx-auto rounded-full"></div>
+                </div>
+                
+                <!-- Highlights Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                    ${highlightCards}
+                </div>
+                
+                <!-- Special Note -->
+                <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-6 md:p-8 text-center max-w-2xl mx-auto">
+                    <div class="flex items-center justify-center gap-3 mb-2">
+                        <span class="text-3xl">🏅</span>
+                        <span class="text-3xl">👑</span>
+                        <span class="text-3xl">🏅</span>
+                    </div>
+                    <p class="text-lg md:text-xl font-bold text-white">
+                        ${highlights.specialNote}
+                    </p>
+                </div>
+            </div>
+        </section>
+    `;
+}
