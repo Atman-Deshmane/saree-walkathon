@@ -105,10 +105,9 @@ export const siteContent = {
     // CELEBRITY VIDEO SECTION
     // ==========================================
     celebrity: {
-        sectionTitle: "सेलिब्रिटी संदेश",
-        // Using a vertical video (Shorts style) ID
-        videoId: "shorts/dQw4w9WgXcQ", // Placeholder for Shorts URL pattern, usually standard ID works
-        // Suggesting a real portrait video placeholder if possible, or sticking to standard vertical aspect ratio
+        sectionTitle: "मृणाल कुलकर्णी",
+        sectionSubtitle: "लोकप्रिय अभिनेत्री",
+        videoId: "jiOEuuvadsI",
         videoTitle: "विशेष संदेश - साडी वॉकेथॉन २०२६",
         description: "आमच्या कार्यक्रमाला विशेष शुभेच्छा संदेश"
     },

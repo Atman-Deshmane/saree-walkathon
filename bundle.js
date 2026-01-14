@@ -323,8 +323,26 @@ function renderCelebrity() {
                     </div>
                     <div class="relative flex-none">
                         <div class="absolute inset-0 bg-primary-500 blur-3xl opacity-30 transform scale-110"></div>
-                        <div class="phone-frame animate-float">
-                            <iframe src="https://www.youtube.com/embed/${celebrity.videoId}?rel=0&controls=0&modestbranding=1&loop=1" title="${celebrity.videoTitle}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+                        <div class="phone-frame animate-float" id="celebrity-video-container">
+                            <div class="celebrity-video-thumbnail" id="celebrity-video-thumbnail" style="cursor: pointer; position: relative; width: 100%; height: 100%;">
+                                <img src="https://img.youtube.com/vi/${celebrity.videoId}/maxresdefault.jpg" 
+                                     alt="${celebrity.videoTitle}" 
+                                     style="width: 100%; height: 100%; object-fit: cover; border-radius: 24px;"
+                                     onerror="this.src='https://img.youtube.com/vi/${celebrity.videoId}/hqdefault.jpg'">
+                                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+                                            width: 80px; height: 80px; background: rgba(219, 39, 119, 0.9); 
+                                            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+                                            box-shadow: 0 4px 30px rgba(219, 39, 119, 0.5); transition: all 0.3s ease;">
+                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="white">
+                                        <path d="M8 5v14l11-7z"/>
+                                    </svg>
+                                </div>
+                                <div style="position: absolute; bottom: 20px; left: 20px; right: 20px; 
+                                            background: rgba(0,0,0,0.7); padding: 12px 16px; border-radius: 12px;
+                                            color: white; font-size: 14px; text-align: center;">
+                                    ▶️ व्हिडिओ पाहण्यासाठी क्लिक करा
+                                </div>
+                            </div>
                         </div>
                         <div class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-white/10 to-transparent pointer-events-none rounded-[32px]"></div>
                     </div>
@@ -334,19 +352,38 @@ function renderCelebrity() {
     `;
 }
 
+function initCelebrityVideo() {
+    const thumbnail = document.getElementById('celebrity-video-thumbnail');
+    const container = document.getElementById('celebrity-video-container');
+    if (thumbnail && container) {
+        thumbnail.addEventListener('click', function () {
+            const videoId = siteContent.celebrity.videoId;
+            container.innerHTML = \`
+                <iframe 
+                    src="https://www.youtube.com/embed/\${videoId}?autoplay=1&rel=0&modestbranding=1" 
+                    title="\${siteContent.celebrity.videoTitle}" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen 
+                    style="width: 100%; height: 100%; border: none; border-radius: 24px;">
+                </iframe>
+            \`;
+        });
+    }
+}
+
 // Online Registration
 function renderOnlineRegistration() {
     const { onlineRegistration } = siteContent;
     const { form } = onlineRegistration;
     const tshirtSizes = ['S', 'M', 'L', 'XL', 'XXL'].map(size => `
-        <label class="cursor-pointer">
-            <input type="radio" name="size" value="${size}" class="peer sr-only" required>
-            <div class="w-14 h-14 md:w-12 md:h-12 rounded-xl border-2 border-primary-100 bg-white/50 flex items-center justify-center font-bold text-primary-400 peer-checked:bg-primary-500 peer-checked:text-white peer-checked:border-primary-500 peer-checked:shadow-lg peer-checked:-translate-y-1 transition-all hover:bg-white text-sm">${size}</div>
-        </label>
-    `).join('');
+                < label class="cursor-pointer" >
+                    <input type="radio" name="size" value="${size}" class="peer sr-only" required>
+                        <div class="w-14 h-14 md:w-12 md:h-12 rounded-xl border-2 border-primary-100 bg-white/50 flex items-center justify-center font-bold text-primary-400 peer-checked:bg-primary-500 peer-checked:text-white peer-checked:border-primary-500 peer-checked:shadow-lg peer-checked:-translate-y-1 transition-all hover:bg-white text-sm">${size}</div>
+                    </label>
+            `).join('');
 
     return `
-        <section id="online-registration" class="py-16 md:py-24 bg-gradient-to-b from-primary-50 to-white relative overflow-hidden">
+                < section id = "online-registration" class="py-16 md:py-24 bg-gradient-to-b from-primary-50 to-white relative overflow-hidden" >
              <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
                 <div class="absolute top-1/2 -left-20 w-64 md:w-96 h-64 md:h-96 bg-primary-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30"></div>
                 <div class="absolute bottom-0 right-0 w-64 md:w-96 h-64 md:h-96 bg-yellow-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30"></div>
@@ -372,8 +409,8 @@ function renderOnlineRegistration() {
                     </div>
                 </div>
             </div>
-        </section>
-    `;
+        </section >
+                `;
 }
 
 function initOnlineRegistration() {
@@ -401,32 +438,32 @@ function renderRegistration() {
     const center = registration.centers[0]; // Only one center
 
     return `
-        <section id="centers" class="py-16 md:py-24 bg-gradient-to-b from-white to-primary-50">
-            <div class="container">
-                <div class="text-center mb-8 md:mb-12 pt-4 md:pt-8">
-                    <h2 class="text-3xl md:text-5xl font-black gradient-text-modern mb-2 md:mb-4 py-2">${registration.sectionTitle}</h2>
-                    <p class="text-lg md:text-xl text-primary-600 font-light">${registration.sectionSubtitle}</p>
-                </div>
-                <div class="flex justify-center">
-                    <div class="glass-card p-8 md:p-10 rounded-2xl md:rounded-[2rem] max-w-md text-center cursor-pointer hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 registration-center-card" data-center='${JSON.stringify(center)}'>
-                        <div class="mb-6">
-                            <span class="bg-gradient-to-r from-primary-500 to-primary-600 text-white px-4 py-2 rounded-full text-sm font-bold uppercase tracking-wider">📍 ${center.area}</span>
+                < section id = "centers" class="py-16 md:py-24 bg-gradient-to-b from-white to-primary-50" >
+                    <div class="container">
+                        <div class="text-center mb-8 md:mb-12 pt-4 md:pt-8">
+                            <h2 class="text-3xl md:text-5xl font-black gradient-text-modern mb-2 md:mb-4 py-2">${registration.sectionTitle}</h2>
+                            <p class="text-lg md:text-xl text-primary-600 font-light">${registration.sectionSubtitle}</p>
                         </div>
-                        <h3 class="text-2xl md:text-3xl font-black text-primary-900 mb-4">${center.placeName}</h3>
-                        <p class="text-primary-600 font-medium flex items-center justify-center gap-2 text-lg mb-4">
-                            <span class="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center text-xl">👤</span>
-                            ${center.contactPerson}
-                        </p>
-                        <a href="tel:+91${center.phone}" class="inline-flex items-center gap-3 bg-primary-600 hover:bg-primary-700 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all shadow-lg hover:shadow-primary-500/30">
-                            <span>📞</span>
-                            <span>${center.phone}</span>
-                        </a>
-                        <p class="mt-6 text-primary-400 text-sm">अधिक माहितीसाठी क्लिक करा ☝️</p>
+                        <div class="flex justify-center">
+                            <div class="glass-card p-8 md:p-10 rounded-2xl md:rounded-[2rem] max-w-md text-center cursor-pointer hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 registration-center-card" data-center='${JSON.stringify(center)}'>
+                                <div class="mb-6">
+                                    <span class="bg-gradient-to-r from-primary-500 to-primary-600 text-white px-4 py-2 rounded-full text-sm font-bold uppercase tracking-wider">📍 ${center.area}</span>
+                                </div>
+                                <h3 class="text-2xl md:text-3xl font-black text-primary-900 mb-4">${center.placeName}</h3>
+                                <p class="text-primary-600 font-medium flex items-center justify-center gap-2 text-lg mb-4">
+                                    <span class="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center text-xl">👤</span>
+                                    ${center.contactPerson}
+                                </p>
+                                <a href="tel:+91${center.phone}" class="inline-flex items-center gap-3 bg-primary-600 hover:bg-primary-700 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all shadow-lg hover:shadow-primary-500/30">
+                                    <span>📞</span>
+                                    <span>${center.phone}</span>
+                                </a>
+                                <p class="mt-6 text-primary-400 text-sm">अधिक माहितीसाठी क्लिक करा ☝️</p>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </section>
-    `;
+        </section >
+                `;
 }
 
 function initRegistrationModal() {
@@ -435,15 +472,15 @@ function initRegistrationModal() {
         const card = e.target.closest('.registration-center-card');
         if (card) {
             modalContainer.innerHTML = `
-                <div class="modal-overlay backdrop-blur-md" id="registration-modal" style="padding: 20px; overflow-y: auto;">
+                < div class="modal-overlay backdrop-blur-md" id = "registration-modal" style = "padding: 20px; overflow-y: auto;" >
                     <div class="modal-content glass-panel p-0 overflow-hidden shadow-2xl scale-95 opacity-0 animate-[popup_0.3s_ease-out_forwards] max-w-4xl w-full mx-auto my-auto">
                         <button class="modal-close bg-white text-primary-600 hover:bg-primary-50 top-4 right-4 shadow-lg z-10" id="close-reg-modal">&times;</button>
                         <div class="bg-white p-2">
-                             <img src="src/img/सात्विक ट्रेडर्स.png" alt="सात्विक ट्रेडर्स" class="w-full h-auto max-h-[90vh] object-contain">
+                            <img src="src/img/सात्विक ट्रेडर्स.png" alt="सात्विक ट्रेडर्स" class="w-full h-auto max-h-[90vh] object-contain">
                         </div>
                     </div>
-                </div>
-                <style>@keyframes popup { to { transform: scale(1); opacity: 1; } }</style>
+                </div >
+                <style>@keyframes popup {to {transform: scale(1); opacity: 1; } }</style>
             `;
             document.getElementById('registration-modal').addEventListener('click', (ev) => {
                 if (ev.target.id === 'registration-modal' || ev.target.id === 'close-reg-modal') {
@@ -460,7 +497,7 @@ function initRegistrationModal() {
 function generateSponsorsContent() {
     const { sponsors } = siteContent.tabs;
     const sponsorCards = sponsors.items.map(sponsor => `
-        <div class="glass-card rounded-2xl overflow-hidden p-3 group flex-shrink-0 w-72 md:w-80 snap-start">
+                < div class="glass-card rounded-2xl overflow-hidden p-3 group flex-shrink-0 w-72 md:w-80 snap-start" >
             <div class="video-container rounded-xl overflow-hidden bg-black/5">
                  <iframe src="https://www.youtube.com/embed/${sponsor.videoId}?rel=0" title="${sponsor.name}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
             </div>
@@ -468,10 +505,10 @@ function generateSponsorsContent() {
                 <h4 class="font-bold text-primary-900 text-center">${sponsor.name}</h4>
                 <button class="sponsor-details-btn px-5 py-2 rounded-full bg-primary-600 text-white hover:bg-primary-700 transition-colors text-sm font-semibold" data-poster="${sponsor.posterUrl}" data-name="${sponsor.name}">Know More</button>
             </div>
-        </div>
-    `).join('');
+        </div >
+                `).join('');
     return `
-        <div class="relative">
+                < div class="relative" >
             <button id="sponsor-scroll-left" class="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 md:w-12 md:h-12 bg-white/90 hover:bg-white rounded-full shadow-lg flex items-center justify-center text-primary-600 hover:text-primary-800 transition-all -ml-4 md:-ml-6">
                 <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
             </button>
@@ -479,61 +516,61 @@ function generateSponsorsContent() {
             <button id="sponsor-scroll-right" class="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 md:w-12 md:h-12 bg-white/90 hover:bg-white rounded-full shadow-lg flex items-center justify-center text-primary-600 hover:text-primary-800 transition-all -mr-4 md:-mr-6">
                 <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
             </button>
-        </div>
-        <style>.scrollbar-hide::-webkit-scrollbar { display: none; } .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }</style>
-    `;
+        </div >
+                <style>.scrollbar-hide::-webkit-scrollbar {display: none; } .scrollbar-hide {-ms - overflow - style: none; scrollbar-width: none; }</style>
+            `;
 }
 
 function generateCauseContent() {
     const { cause } = siteContent.tabs;
-    const statsCards = cause.stats.map(stat => `<div class="glass-card p-4 md:p-6 rounded-xl md:rounded-2xl text-center"><div class="text-2xl md:text-5xl font-black gradient-text-modern mb-1 md:mb-2">${stat.number}</div><div class="text-primary-800 font-bold uppercase tracking-wide text-[10px] md:text-sm">${stat.label}</div></div>`).join('');
+    const statsCards = cause.stats.map(stat => `< div class="glass-card p-4 md:p-6 rounded-xl md:rounded-2xl text-center" ><div class="text-2xl md:text-5xl font-black gradient-text-modern mb-1 md:mb-2">${stat.number}</div><div class="text-primary-800 font-bold uppercase tracking-wide text-[10px] md:text-sm">${stat.label}</div></div > `).join('');
     return `
-        <div class="max-w-4xl mx-auto">
-            <div class="glass-panel p-6 md:p-12 rounded-2xl md:rounded-[2.5rem] relative overflow-hidden">
-                <div class="absolute -right-20 -top-20 w-48 md:w-64 h-48 md:h-64 bg-primary-200 rounded-full blur-3xl opacity-50"></div>
-                <div class="relative z-10 flex flex-col md:flex-row gap-8 md:gap-12 items-center">
-                    <div class="flex-1 text-center md:text-left"><h3 class="text-2xl md:text-3xl font-black text-primary-900 mb-4 md:mb-6">${cause.title}</h3><div class="space-y-3 md:space-y-4 text-primary-800 leading-relaxed text-base md:text-lg">${cause.description.split('\n').map(line => `<p>${line.replace(/\*\*(.*?)\*\*/g, '<span class="font-bold text-primary-600">$1</span>')}</p>`).join('')}</div></div>
-                    <div class="flex-1 w-full grid grid-cols-2 gap-3 md:gap-4">${statsCards}</div>
-                </div>
-            </div>
-        </div>
-    `;
+                < div class="max-w-4xl mx-auto" >
+                    <div class="glass-panel p-6 md:p-12 rounded-2xl md:rounded-[2.5rem] relative overflow-hidden">
+                        <div class="absolute -right-20 -top-20 w-48 md:w-64 h-48 md:h-64 bg-primary-200 rounded-full blur-3xl opacity-50"></div>
+                        <div class="relative z-10 flex flex-col md:flex-row gap-8 md:gap-12 items-center">
+                            <div class="flex-1 text-center md:text-left"><h3 class="text-2xl md:text-3xl font-black text-primary-900 mb-4 md:mb-6">${cause.title}</h3><div class="space-y-3 md:space-y-4 text-primary-800 leading-relaxed text-base md:text-lg">${cause.description.split('\n').map(line => `<p>${line.replace(/\*\*(.*?)\*\*/g, '<span class="font-bold text-primary-600">$1</span>')}</p>`).join('')}</div></div>
+                            <div class="flex-1 w-full grid grid-cols-2 gap-3 md:gap-4">${statsCards}</div>
+                        </div>
+                    </div>
+        </div >
+                `;
 }
 
 function generateHistoryContent() {
     const { history } = siteContent.tabs;
     const imageCards = history.images.map((img) => `
-        <div class="relative group rounded-2xl overflow-hidden h-64 glass-card p-0 border-none shadow-lg">
-            <img src="${img.url}" alt="${img.caption}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
-                <p class="text-white font-bold text-lg translate-y-4 group-hover:translate-y-0 transition-transform duration-300">${img.caption}</p>
-            </div>
-        </div>
-    `).join('');
-    return `<div class="max-w-6xl mx-auto text-center pt-8 md:pt-12"><h3 class="text-3xl font-bold text-primary-900 mb-4">${history.title}</h3><p class="text-primary-600 mb-8">${history.description}</p><div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">${imageCards}</div></div>`;
+                < div class="relative group rounded-2xl overflow-hidden h-64 glass-card p-0 border-none shadow-lg" >
+                    <img src="${img.url}" alt="${img.caption}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+                            <p class="text-white font-bold text-lg translate-y-4 group-hover:translate-y-0 transition-transform duration-300">${img.caption}</p>
+                        </div>
+                    </div>
+            `).join('');
+    return `< div class="max-w-6xl mx-auto text-center pt-8 md:pt-12" ><h3 class="text-3xl font-bold text-primary-900 mb-4">${history.title}</h3><p class="text-primary-600 mb-8">${history.description}</p><div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">${imageCards}</div></div > `;
 }
 
 function renderTabs() {
     const { sponsors, cause, history } = siteContent.tabs;
     return `
-        <section id="tabs-section" class="py-16 md:py-24 bg-white/50">
-            <div class="container">
-                <div class="flex justify-center mb-8 md:mb-12">
-                    <div class="modern-tab-container p-1 md:p-1.5 bg-white/80 backdrop-blur-xl border border-white shadow-xl rounded-full overflow-x-auto max-w-full">
-                        <button class="modern-tab-btn active px-4 md:px-8 py-2 md:py-3 rounded-full text-sm md:text-base whitespace-nowrap" data-tab="sponsors" id="tab-sponsors">${sponsors.tabTitle}</button>
-                        <button class="modern-tab-btn px-4 md:px-8 py-2 md:py-3 rounded-full text-sm md:text-base whitespace-nowrap" data-tab="cause" id="tab-cause">${cause.tabTitle}</button>
-                        <button class="modern-tab-btn px-4 md:px-8 py-2 md:py-3 rounded-full text-sm md:text-base whitespace-nowrap" data-tab="history" id="tab-history">${history.tabTitle}</button>
+                < section id = "tabs-section" class="py-16 md:py-24 bg-white/50" >
+                    <div class="container">
+                        <div class="flex justify-center mb-8 md:mb-12">
+                            <div class="modern-tab-container p-1 md:p-1.5 bg-white/80 backdrop-blur-xl border border-white shadow-xl rounded-full overflow-x-auto max-w-full">
+                                <button class="modern-tab-btn active px-4 md:px-8 py-2 md:py-3 rounded-full text-sm md:text-base whitespace-nowrap" data-tab="sponsors" id="tab-sponsors">${sponsors.tabTitle}</button>
+                                <button class="modern-tab-btn px-4 md:px-8 py-2 md:py-3 rounded-full text-sm md:text-base whitespace-nowrap" data-tab="cause" id="tab-cause">${cause.tabTitle}</button>
+                                <button class="modern-tab-btn px-4 md:px-8 py-2 md:py-3 rounded-full text-sm md:text-base whitespace-nowrap" data-tab="history" id="tab-history">${history.tabTitle}</button>
+                            </div>
+                        </div>
+                        <div class="tab-content bg-transparent p-0 min-h-[400px]">
+                            <div class="tab-panel active animate-fade-in" id="panel-sponsors" data-panel="sponsors">${generateSponsorsContent()}</div>
+                            <div class="tab-panel animate-fade-in" id="panel-cause" data-panel="cause">${generateCauseContent()}</div>
+                            <div class="tab-panel animate-fade-in" id="panel-history" data-panel="history">${generateHistoryContent()}</div>
+                        </div>
                     </div>
-                </div>
-                <div class="tab-content bg-transparent p-0 min-h-[400px]">
-                    <div class="tab-panel active animate-fade-in" id="panel-sponsors" data-panel="sponsors">${generateSponsorsContent()}</div>
-                    <div class="tab-panel animate-fade-in" id="panel-cause" data-panel="cause">${generateCauseContent()}</div>
-                    <div class="tab-panel animate-fade-in" id="panel-history" data-panel="history">${generateHistoryContent()}</div>
-                </div>
-            </div>
-        </section>
-        <style>.animate-fade-in { animation: fadeIn 0.5s ease-out; }</style>
-    `;
+        </section >
+                <style>.animate-fade-in {animation: fadeIn 0.5s ease-out; }</style>
+            `;
 }
 
 function initTabInteractions() {
@@ -575,13 +612,13 @@ function initTabInteractions() {
             const btn = e.target.closest('.sponsor-details-btn');
             const posterUrl = btn.dataset.poster;
             modalContainer.innerHTML = `
-                <div class="modal-overlay backdrop-blur-md" id="sponsor-modal">
+                < div class="modal-overlay backdrop-blur-md" id = "sponsor-modal" >
                     <div class="modal-content glass-panel p-0 overflow-hidden shadow-2xl scale-95 opacity-0 animate-[popup_0.3s_ease-out_forwards]">
                         <button class="modal-close bg-white text-primary-600 hover:bg-primary-50 top-4 right-4 shadow-lg" id="close-modal">&times;</button>
                         <img src="${posterUrl}" class="w-full max-h-[85vh] object-contain bg-white">
                     </div>
-                </div>
-                <style>@keyframes popup { to { transform: scale(1); opacity: 1; } }</style>
+                </div >
+                <style>@keyframes popup {to {transform: scale(1); opacity: 1; } }</style>
             `;
             document.getElementById('sponsor-modal').addEventListener('click', (ev) => {
                 if (ev.target.id === 'sponsor-modal' || ev.target.id === 'close-modal') {
@@ -596,26 +633,26 @@ function initTabInteractions() {
 function renderNotableWomen() {
     const { notableWomen } = siteContent;
     const womenCards = notableWomen.women.map((woman) => `
-        <div class="group relative cursor-pointer notable-woman-card" data-certificate="${woman.certificateImage || woman.photo}" data-name="${woman.name}">
-            <div class="glass-card rounded-2xl md:rounded-[2rem] overflow-hidden transition-all duration-500 group-hover:-translate-y-2">
-                <div class="relative h-48 md:h-72 overflow-hidden">
-                    <img src="${woman.photo}" alt="${woman.name}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy">
-                    <div class="absolute inset-0 bg-gradient-to-t from-primary-900 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity"></div>
-                    <div class="absolute top-2 right-2 md:top-4 md:right-4 bg-white/20 backdrop-blur-md border border-white/50 text-white px-2 py-0.5 md:px-3 md:py-1 rounded-full text-[10px] md:text-xs font-bold tracking-wider">🏆 सन्मान</div>
-                </div>
-                <div class="p-4 md:p-6 relative">
-                    <div class="absolute -top-6 md:-top-8 right-3 md:right-6 w-10 h-10 md:w-14 md:h-14 bg-gradient-to-br from-yellow-400 to-amber-500 rounded-xl md:rounded-2xl flex items-center justify-center text-xl md:text-2xl shadow-lg transform rotate-3 group-hover:rotate-12 transition-transform duration-300">🏆</div>
-                    <h3 class="text-sm md:text-lg font-bold text-primary-900 mb-0.5 md:mb-1 group-hover:text-primary-600 transition-colors leading-tight pr-12">${woman.name}</h3>
-                    <p class="text-primary-500 text-[10px] md:text-sm font-medium mb-2">${woman.designation}</p>
-                    <div class="h-px w-full bg-primary-100 mb-2"></div>
-                    <p class="text-primary-700 font-medium text-xs md:text-sm leading-snug">${woman.achievement}</p>
-                    <p class="text-primary-400 text-[10px] mt-2">प्रमाणपत्र पाहण्यासाठी क्लिक करा</p>
-                </div>
-            </div>
-        </div>
-    `).join('');
+                < div class="group relative cursor-pointer notable-woman-card" data - certificate="${woman.certificateImage || woman.photo}" data - name="${woman.name}" >
+                    <div class="glass-card rounded-2xl md:rounded-[2rem] overflow-hidden transition-all duration-500 group-hover:-translate-y-2">
+                        <div class="relative h-48 md:h-72 overflow-hidden">
+                            <img src="${woman.photo}" alt="${woman.name}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy">
+                                <div class="absolute inset-0 bg-gradient-to-t from-primary-900 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity"></div>
+                                <div class="absolute top-2 right-2 md:top-4 md:right-4 bg-white/20 backdrop-blur-md border border-white/50 text-white px-2 py-0.5 md:px-3 md:py-1 rounded-full text-[10px] md:text-xs font-bold tracking-wider">🏆 सन्मान</div>
+                        </div>
+                        <div class="p-4 md:p-6 relative">
+                            <div class="absolute -top-6 md:-top-8 right-3 md:right-6 w-10 h-10 md:w-14 md:h-14 bg-gradient-to-br from-yellow-400 to-amber-500 rounded-xl md:rounded-2xl flex items-center justify-center text-xl md:text-2xl shadow-lg transform rotate-3 group-hover:rotate-12 transition-transform duration-300">🏆</div>
+                            <h3 class="text-sm md:text-lg font-bold text-primary-900 mb-0.5 md:mb-1 group-hover:text-primary-600 transition-colors leading-tight pr-12">${woman.name}</h3>
+                            <p class="text-primary-500 text-[10px] md:text-sm font-medium mb-2">${woman.designation}</p>
+                            <div class="h-px w-full bg-primary-100 mb-2"></div>
+                            <p class="text-primary-700 font-medium text-xs md:text-sm leading-snug">${woman.achievement}</p>
+                            <p class="text-primary-400 text-[10px] mt-2">प्रमाणपत्र पाहण्यासाठी क्लिक करा</p>
+                        </div>
+                    </div>
+        </div >
+                `).join('');
     return `
-        <section id="notable-women" class="py-16 md:py-24 bg-primary-50 relative overflow-hidden">
+                < section id = "notable-women" class="py-16 md:py-24 bg-primary-50 relative overflow-hidden" >
              <div class="absolute top-0 right-0 w-64 md:w-[500px] h-64 md:h-[500px] bg-white rounded-full mix-blend-overlay filter blur-3xl opacity-50 translate-x-1/2 -translate-y-1/2"></div>
             <div class="container relative z-10">
                 <div class="text-center mb-10 md:mb-16 pt-4 md:pt-8">
@@ -624,8 +661,8 @@ function renderNotableWomen() {
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 max-w-5xl mx-auto">${womenCards}</div>
             </div>
-        </section>
-    `;
+        </section >
+                `;
 }
 
 function initNotableWomenModal() {
@@ -636,7 +673,7 @@ function initNotableWomenModal() {
             const certificateImage = card.dataset.certificate;
             const name = card.dataset.name;
             modalContainer.innerHTML = `
-                <div class="modal-overlay backdrop-blur-md" id="woman-modal" style="padding: 20px; overflow-y: auto;">
+                < div class="modal-overlay backdrop-blur-md" id = "woman-modal" style = "padding: 20px; overflow-y: auto;" >
                     <div class="modal-content glass-panel p-0 overflow-hidden shadow-2xl scale-95 opacity-0 animate-[popup_0.3s_ease-out_forwards] max-w-4xl w-full mx-auto my-auto">
                         <button class="modal-close bg-white text-primary-600 hover:bg-primary-50 top-4 right-4 shadow-lg z-10" id="close-woman-modal">&times;</button>
                         <div class="bg-gradient-to-br from-primary-600 to-primary-800 p-4 text-white text-center">
@@ -647,8 +684,8 @@ function initNotableWomenModal() {
                             <img src="${certificateImage}" alt="${name} - प्रमाणपत्र" class="w-full h-auto max-h-[80vh] object-contain">
                         </div>
                     </div>
-                </div>
-                <style>@keyframes popup { to { transform: scale(1); opacity: 1; } }</style>
+                </div >
+                <style>@keyframes popup {to {transform: scale(1); opacity: 1; } }</style>
             `;
             document.getElementById('woman-modal').addEventListener('click', (ev) => {
                 if (ev.target.id === 'woman-modal' || ev.target.id === 'close-woman-modal') {
@@ -664,13 +701,13 @@ function initNotableWomenModal() {
 function renderFooter() {
     const { footer } = siteContent;
     const partnerLogos = footer.partners.organizations.map(org => `
-        <div class="group flex flex-col items-center justify-center p-4 md:p-6 bg-white hover:bg-white rounded-2xl transition-all duration-300 shadow-sm hover:shadow-md h-full">
-            <img src="${org.logo}" alt="${org.name}" class="h-16 md:h-20 w-auto object-contain mb-3" loading="lazy">
-            <p class="text-xs text-primary-800 font-bold text-center leading-tight">${org.name}</p>
-        </div>
-    `).join('');
+                < div class="group flex flex-col items-center justify-center p-4 md:p-6 bg-white hover:bg-white rounded-2xl transition-all duration-300 shadow-sm hover:shadow-md h-full" >
+                    <img src="${org.logo}" alt="${org.name}" class="h-16 md:h-20 w-auto object-contain mb-3" loading="lazy">
+                        <p class="text-xs text-primary-800 font-bold text-center leading-tight">${org.name}</p>
+                    </div>
+            `).join('');
     const whatsappUrl = `https://wa.me/${footer.contact.whatsappNumber}?text=${encodeURIComponent(footer.contact.whatsappMessage)}`;
-    return `
+            return `
         <section id="team" class="py-12 md:py-20 bg-white">
             <div class="container">
                 <div class="text-center mb-8 md:mb-12"><h2 class="text-2xl md:text-3xl font-bold gradient-text-modern mb-2">${footer.teamSection.title}</div>
@@ -707,17 +744,17 @@ function renderFooter() {
             <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
         </a>
     `;
-}
+        }
 
 // ============================================
 // 3. MAIN RENDER FUNCTION
 // ============================================
 
 function renderApp() {
-    const app = document.getElementById('app');
-    if (!app) return;
+                const app = document.getElementById('app');
+                if (!app) return;
 
-    app.innerHTML = `
+                app.innerHTML = `
         ${renderNavbar()}
         ${renderHero()}
         ${renderIncentives()}
@@ -728,33 +765,34 @@ function renderApp() {
         ${renderNotableWomen()}
         ${renderFooter()}
     `;
-    console.log('✅ Page rendered successfully');
-}
+                console.log('✅ Page rendered successfully');
+            }
 
 function initInteractions() {
-    initTabInteractions();
-    initRegistrationModal();
-    initNotableWomenModal();
+                initTabInteractions();
+                initRegistrationModal();
+                initNotableWomenModal();
+                initCelebrityVideo();
 
-    // Additional interactions if any
-    const heroCTA = document.getElementById('hero-cta');
-    if (heroCTA) {
-        heroCTA.addEventListener('click', () => {
-            heroCTA.classList.remove('animate-bounce');
-        }, { once: true });
-    }
-}
+                // Additional interactions if any
+                const heroCTA = document.getElementById('hero-cta');
+                if (heroCTA) {
+                    heroCTA.addEventListener('click', () => {
+                        heroCTA.classList.remove('animate-bounce');
+                    }, { once: true });
+                }
+            }
 
 function init() {
-    console.log('🚀 Initializing Saree Walkathon 2026 Website...');
-    renderApp();
-    initInteractions();
-    console.log('🎉 Website ready!');
-}
+                console.log('🚀 Initializing Saree Walkathon 2026 Website...');
+                renderApp();
+                initInteractions();
+                console.log('🎉 Website ready!');
+            }
 
 // Start
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-} else {
-    init();
-}
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
