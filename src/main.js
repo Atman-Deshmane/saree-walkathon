@@ -7,20 +7,21 @@
  * in the correct order into the #app container.
  * 
  * Also initializes all interactive functionality.
+ * @version 3.0
  */
 
 // ===========================================
-// COMPONENT IMPORTS
+// COMPONENT IMPORTS (with cache-bust)
 // ===========================================
-import { renderNavbar } from './components/Navbar.js';
-import { renderHero } from './components/Hero.js';
-import { renderIncentives } from './components/Incentives.js';
-import { renderHighlights } from './components/Highlights.js';
-import { renderCelebrity, initCelebrityVideo } from './components/Celebrity.js';
-import { renderRegistration, initRegistrationModal } from './components/Registration.js';
-import { renderTabs, initTabInteractions } from './components/TabsSection.js';
-import { renderNotableWomen, initNotableWomenModal } from './components/NotableWomen.js';
-import { renderFooter } from './components/Footer.js';
+import { renderNavbar } from './components/Navbar.js?v=3.0';
+import { renderHero } from './components/Hero.js?v=3.0';
+import { renderIncentives } from './components/Incentives.js?v=3.0';
+import { renderHighlights } from './components/Highlights.js?v=3.0';
+import { renderCelebrity, initCelebrityVideo } from './components/Celebrity.js?v=3.0';
+import { renderRegistration, initRegistrationModal } from './components/Registration.js?v=3.0';
+import { renderTabs, initTabInteractions } from './components/TabsSection.js?v=3.0';
+import { renderNotableWomen, initNotableWomenModal } from './components/NotableWomen.js?v=3.0';
+import { renderFooter } from './components/Footer.js?v=3.0';
 
 // ===========================================
 // MAIN RENDER FUNCTION
