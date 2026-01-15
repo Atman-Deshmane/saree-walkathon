@@ -17,10 +17,9 @@ import { renderHero } from './components/Hero.js';
 import { renderIncentives } from './components/Incentives.js';
 import { renderHighlights } from './components/Highlights.js';
 import { renderCelebrity, initCelebrityVideo } from './components/Celebrity.js';
-
-import { renderRegistration } from './components/Registration.js';
+import { renderRegistration, initRegistrationModal } from './components/Registration.js';
 import { renderTabs, initTabInteractions } from './components/TabsSection.js';
-import { renderNotableWomen } from './components/NotableWomen.js';
+import { renderNotableWomen, initNotableWomenModal } from './components/NotableWomen.js';
 import { renderFooter } from './components/Footer.js';
 
 // ===========================================
@@ -38,7 +37,6 @@ function renderApp() {
     const pageHTML = `
         ${renderNavbar()}
         ${renderHero()}
-
         ${renderIncentives()}
         ${renderHighlights()}
         ${renderCelebrity()}
@@ -63,6 +61,12 @@ function initInteractions() {
 
     // Initialize celebrity video click handler
     initCelebrityVideo();
+
+    // Initialize notable women certificate modal
+    initNotableWomenModal();
+
+    // Initialize registration center modal
+    initRegistrationModal();
 
     // Stop bounce animation on CTA after first interaction
     const heroCTA = document.getElementById('hero-cta');

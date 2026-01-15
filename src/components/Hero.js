@@ -4,7 +4,7 @@
  * ============================================
  * Impactful full-screen layout.
  * Magazine-style typography.
- * Floating, glowing CTA button.
+ * Title sponsor section.
  */
 
 import { siteContent } from '../data/content.js';
@@ -38,23 +38,19 @@ export function renderHero() {
                 
                 <!-- Text Content (Left aligned on Desktop) -->
                 <div class="text-center md:text-left flex-1 space-y-8 fade-up">
-                    <div class="inline-block px-4 py-1.5 rounded-full border border-white/30 bg-white/10 backdrop-blur-md text-white text-sm font-medium tracking-wider uppercase mb-4">
-                        ✨ सर्वात मोठा सोहळा
+                    <!-- Title Sponsor Section -->
+                    <div class="flex flex-col items-center md:items-start mb-2">
+                        <img src="${hero.titleSponsorLogo}" alt="The Real Estate Mall" class="h-16 md:h-20 object-contain mb-4 bg-white/90 p-2 rounded-lg shadow-lg">
+                        <p class="text-2xl md:text-3xl text-primary-100 font-semibold tracking-wide uppercase mb-1 drop-shadow-md">The Real Estate Mall Presents</p>
                     </div>
                     
                     <h1 class="text-5xl md:text-7xl lg:text-8xl font-black text-white leading-tight drop-shadow-2xl">
-                        ${hero.title.split(' ').map((word, i) =>
-        i === 1 ? `<span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-300 to-white block">${word}</span>` : word
-    ).join(' ')}
+                        ${hero.title}
                     </h1>
                     
-                    <p class="text-xl md:text-3xl text-primary-100 font-light max-w-2xl leading-relaxed">
-                        ${hero.subtitle}
-                    </p>
-                    
                     <a 
-                        href="#registration"
-                        class="btn-modern text-lg md:text-xl group mt-8 inline-flex"
+                        href="#centers"
+                        class="btn-modern text-lg md:text-xl group mt-8 inline-flex px-8 py-4"
                         id="hero-cta"
                     >
                         <span>${hero.ctaText}</span>

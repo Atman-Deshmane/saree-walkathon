@@ -2,63 +2,66 @@
  * ============================================
  * REGISTRATION COMPONENT (MODERN)
  * ============================================
- * Sleek horizontal carousel using native scrollbar hiding.
- * Minimalist cards.
+ * Single centered card for registration center.
+ * Clickable for modal with banner image.
  */
 
 import { siteContent } from '../data/content.js';
 
 export function renderRegistration() {
     const { registration } = siteContent;
-
-    const centerCards = registration.centers.map(center => `
-        <div class="min-w-[280px] md:min-w-[340px] glass-card p-6 md:p-8 rounded-2xl md:rounded-[2rem] flex flex-col justify-between h-full snaps-start">
-            <div>
-                <div class="flex items-center gap-2 mb-4 md:mb-6">
-                    <span class="bg-primary-100 text-primary-700 px-3 py-1 md:px-4 md:py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">
-                        📍 ${center.area}
-                    </span>
-                </div>
-                <h3 class="text-xl md:text-2xl font-bold text-primary-900 mb-2 leading-tight">
-                    ${center.placeName}
-                </h3>
-                <p class="text-primary-500 font-medium flex items-center gap-2 text-sm md:text-base">
-                    <span class="w-7 h-7 md:w-8 md:h-8 rounded-full bg-primary-50 flex items-center justify-center text-sm">👤</span>
-                    ${center.contactPerson}
-                </p>
-            </div>
-            
-            <a href="tel:+91${center.phone}" class="mt-6 md:mt-8 flex items-center justify-between bg-primary-50 hover:bg-primary-600 hover:text-white group p-3 md:p-4 rounded-xl transition-all duration-300">
-                <span class="font-bold text-base md:text-lg group-hover:text-white text-primary-700 transition-colors">${center.phone}</span>
-                <span class="w-9 h-9 md:w-10 md:h-10 bg-white rounded-full flex items-center justify-center shadow-sm text-primary-600 group-hover:text-primary-600">📞</span>
-            </a>
-        </div>
-    `).join('');
+    const center = registration.centers[0]; // Only one center
 
     return `
-        <section id="registration" class="py-16 md:py-24 bg-gradient-to-b from-white to-primary-50">
+        <section id="centers" class="py-16 md:py-24 bg-gradient-to-b from-white to-primary-50">
             <div class="container">
-                <div class="flex flex-col items-center md:flex-row md:items-end md:justify-between mb-8 md:mb-12 gap-4 md:gap-6">
-                    <div class="text-center md:text-left">
-                        <h2 class="text-3xl md:text-5xl font-black text-primary-900 mb-2 md:mb-4">
-                            ${registration.sectionTitle}
-                        </h2>
-                        <p class="text-lg md:text-xl text-primary-600 font-light">
-                            ${registration.sectionSubtitle}
-                        </p>
-                    </div>
-                    
-                    <!-- Scroll Controls -->
-                    <div class="flex gap-2">
-                        <button class="w-10 h-10 md:w-12 md:h-12 rounded-full border border-primary-200 flex items-center justify-center text-primary-400 hover:bg-primary-600 hover:text-white hover:border-transparent transition-all" onclick="document.querySelector('.scroll-carousel').scrollBy({left: -300, behavior: 'smooth'})">←</button>
-                        <button class="w-10 h-10 md:w-12 md:h-12 rounded-full border border-primary-200 flex items-center justify-center text-primary-400 hover:bg-primary-600 hover:text-white hover:border-transparent transition-all" onclick="document.querySelector('.scroll-carousel').scrollBy({left: 300, behavior: 'smooth'})">→</button>
-                    </div>
+                <div class="text-center mb-8 md:mb-12 pt-4 md:pt-8">
+                    <h2 class="text-3xl md:text-5xl font-black gradient-text-modern mb-2 md:mb-4 py-2">${registration.sectionTitle}</h2>
+                    <p class="text-lg md:text-xl text-primary-600 font-light">${registration.sectionSubtitle}</p>
                 </div>
-                
-                <div class="scroll-carousel py-4 -mx-4 px-4">
-                    ${centerCards}
+                <div class="flex justify-center">
+                    <div class="glass-card p-8 md:p-10 rounded-2xl md:rounded-[2rem] max-w-md text-center cursor-pointer hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 registration-center-card" data-center='${JSON.stringify(center)}'>
+                        <div class="mb-6">
+                            <span class="bg-gradient-to-r from-primary-500 to-primary-600 text-white px-4 py-2 rounded-full text-sm font-bold uppercase tracking-wider">📍 ${center.area}</span>
+                        </div>
+                        <h3 class="text-2xl md:text-3xl font-black text-primary-900 mb-4">${center.placeName}</h3>
+                        <p class="text-primary-600 font-medium flex items-center justify-center gap-2 text-lg mb-4">
+                            <span class="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center text-xl">👤</span>
+                            ${center.contactPerson}
+                        </p>
+                        <a href="tel:+91${center.phone}" class="inline-flex items-center gap-3 bg-primary-600 hover:bg-primary-700 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all shadow-lg hover:shadow-primary-500/30">
+                            <span>📞</span>
+                            <span>${center.phone}</span>
+                        </a>
+                        <p class="mt-6 text-primary-400 text-sm">अधिक माहितीसाठी क्लिक करा ☝️</p>
+                    </div>
                 </div>
             </div>
         </section>
     `;
+}
+
+export function initRegistrationModal() {
+    const modalContainer = document.getElementById('modal-container');
+    document.addEventListener('click', (e) => {
+        const card = e.target.closest('.registration-center-card');
+        if (card) {
+            modalContainer.innerHTML = `
+                <div class="modal-overlay backdrop-blur-md" id="registration-modal" style="padding: 20px; overflow-y: auto;">
+                    <div class="modal-content glass-panel p-0 overflow-hidden shadow-2xl scale-95 opacity-0 animate-[popup_0.3s_ease-out_forwards] max-w-4xl w-full mx-auto my-auto">
+                        <button class="modal-close bg-white text-primary-600 hover:bg-primary-50 top-4 right-4 shadow-lg z-10" id="close-reg-modal">&times;</button>
+                        <div class="bg-white p-2">
+                            <img src="src/img/सात्विक ट्रेडर्स.png" alt="सात्विक ट्रेडर्स" class="w-full h-auto max-h-[90vh] object-contain">
+                        </div>
+                    </div>
+                </div>
+                <style>@keyframes popup {to {transform: scale(1); opacity: 1; } }</style>
+            `;
+            document.getElementById('registration-modal').addEventListener('click', (ev) => {
+                if (ev.target.id === 'registration-modal' || ev.target.id === 'close-reg-modal') {
+                    modalContainer.innerHTML = '';
+                }
+            });
+        }
+    });
 }
