@@ -5,6 +5,7 @@
  * Portrait video in smartphone frame.
  * Blurred background ambiance.
  * Click to play functionality.
+ * @version 3.0 - Cache bust for Hostinger deployment
  */
 
 import { siteContent } from '../data/content.js';
