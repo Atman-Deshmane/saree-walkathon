@@ -54,12 +54,12 @@ export function renderNotableWomen() {
     `).join('');
 
     return `
-        <section id="notable-women" class="py-16 md:py-24 bg-primary-50 relative overflow-hidden">
+        <section id="notable-women" class="py-8 md:py-12 bg-primary-50 relative overflow-hidden">
              <!-- Abstract Shapes -->
              <div class="absolute top-0 right-0 w-64 md:w-[500px] h-64 md:h-[500px] bg-white rounded-full mix-blend-overlay filter blur-3xl opacity-50 translate-x-1/2 -translate-y-1/2"></div>
 
             <div class="container relative z-10">
-                <div class="text-center mb-10 md:mb-16 pt-4 md:pt-8">
+                <div class="text-center mb-10 md:mb-16">
                     <h2 class="text-3xl md:text-5xl font-black gradient-text-modern mb-3 md:mb-4 py-2">
                         ${notableWomen.sectionTitle}
                     </h2>

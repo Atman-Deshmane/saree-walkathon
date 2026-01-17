@@ -12,7 +12,7 @@ export function renderFooter() {
     const { footer } = siteContent;
 
     const partnerLogos = footer.partners.organizations.map(org => `
-        <div class="group flex flex-col items-center justify-center p-6 bg-white/50 hover:bg-white rounded-2xl transition-all duration-300 grayscale hover:grayscale-0">
+        <div class="group flex flex-col items-center justify-center p-6 bg-white/50 hover:bg-white rounded-2xl transition-all duration-300">
             <img 
                 src="${org.logo}" 
                 alt="${org.name}"

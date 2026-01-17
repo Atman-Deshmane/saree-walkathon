@@ -1,65 +1,82 @@
 /**
  * ============================================
- * HIGHLIGHTS COMPONENT
+ * EVENT PARTNERS COMPONENT
  * ============================================
- * Event highlights: Dhol Tasha, Yoga, Award Ceremony
- * Special note about Mahila Mandal medal with image.
+ * Official Event Partners: Media, Photography, Decoration
+ * Replaces the old Highlights section with attractive partner cards
  */
 
 import { siteContent } from '../data/content.js';
 
 /**
- * Renders the Highlights section
- * @returns {string} HTML string for highlights
+ * Renders the Event Partners section
+ * @returns {string} HTML string for event partners
  */
 export function renderHighlights() {
-    const { highlights } = siteContent;
+    const { eventPartners } = siteContent;
 
-    // Generate highlight cards
-    const highlightCards = highlights.items.map((item) => `
-        <div class="flex flex-col items-center text-center p-6 md:p-8">
-            <div class="w-24 h-24 md:w-32 md:h-32 bg-white rounded-full flex items-center justify-center shadow-lg mb-6 transform hover:scale-110 transition-transform duration-300">
-                <span class="text-5xl md:text-6xl">${item.icon}</span>
+    // Generate partner cards with attractive styling
+    const partnerCards = eventPartners.partners.map((partner) => `
+        <div class="group relative">
+            <div class="glass-card p-6 md:p-8 rounded-2xl text-center transform hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 h-full flex flex-col items-center justify-between">
+                <!-- Category Badge -->
+                <div class="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                    <span class="bg-gradient-to-r ${partner.color} text-white px-4 py-1.5 rounded-full text-xs md:text-sm font-bold shadow-lg whitespace-nowrap">
+                        ${partner.category}
+                    </span>
+                </div>
+                
+                <!-- Logo Container -->
+                <div class="w-28 h-28 md:w-36 md:h-36 bg-white rounded-full flex items-center justify-center shadow-lg mt-6 mb-4 p-4 group-hover:shadow-xl transition-shadow duration-300 overflow-hidden">
+                    <img 
+                        src="${partner.logo}" 
+                        alt="${partner.name}" 
+                        class="w-full h-full object-contain"
+                        loading="lazy"
+                    >
+                </div>
+                
+                <!-- Partner Name -->
+                <h3 class="text-lg md:text-xl font-bold text-primary-800 mt-2">${partner.name}</h3>
+                
+                <!-- Decorative Line -->
+                <div class="w-16 h-1 bg-gradient-to-r ${partner.color} rounded-full mt-3 group-hover:w-24 transition-all duration-300"></div>
             </div>
-            <h3 class="text-xl md:text-2xl font-bold text-white mb-2">${item.title}</h3>
-            <p class="text-primary-100 text-sm md:text-base">${item.description}</p>
         </div>
     `).join('');
 
     return `
-        <section id="highlights" class="py-16 md:py-24 bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800 relative overflow-hidden">
-            <!-- Decorative elements -->
-            <div class="absolute top-0 left-0 w-full h-full opacity-10">
-                <div class="absolute top-10 left-10 md:top-20 md:left-20 text-6xl md:text-9xl">🥁</div>
-                <div class="absolute bottom-10 right-10 md:bottom-20 md:right-20 text-6xl md:text-9xl">🧘</div>
+        <section id="event-partners" class="py-16 md:py-24 bg-gradient-to-br from-primary-50 via-white to-primary-100 relative overflow-hidden">
+            <!-- Decorative Background Elements -->
+            <div class="absolute top-0 left-0 w-full h-full pointer-events-none">
+                <div class="absolute top-10 left-10 w-32 h-32 md:w-48 md:h-48 bg-primary-200 rounded-full blur-3xl opacity-40"></div>
+                <div class="absolute bottom-10 right-10 w-40 h-40 md:w-56 md:h-56 bg-primary-300 rounded-full blur-3xl opacity-30"></div>
+                <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 md:w-96 md:h-96 bg-gradient-to-r from-pink-200 to-purple-200 rounded-full blur-3xl opacity-20"></div>
             </div>
             
             <div class="container relative z-10">
-                <!-- Section Title -->
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
-                        ${highlights.sectionTitle}
-                    </h2>
-                    <div class="w-24 h-1 bg-white/50 mx-auto rounded-full"></div>
-                </div>
-                
-                <!-- Highlights Grid -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-                    ${highlightCards}
-                </div>
-                
-                <!-- Special Note with Image -->
-                <div class="bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-500 rounded-2xl p-6 md:p-8 text-center max-w-3xl mx-auto shadow-2xl transform hover:scale-105 transition-transform duration-300">
-                    <div class="flex flex-col md:flex-row items-center justify-center gap-6">
-                        <img src="${highlights.specialNoteImage || 'https://images.unsplash.com/photo-1567427017947-545c5f8d16ad?w=200&q=80'}" 
-                             alt="Special Medal" 
-                             class="w-20 h-20 md:w-24 md:h-24 rounded-full object-cover border-4 border-white shadow-lg">
-                        <div class="text-center md:text-left">
-                            <p class="text-xl md:text-2xl font-black text-white drop-shadow-lg">${highlights.specialNote}</p>
-                            <p class="text-sm text-white/80 mt-2">विशेष सन्मान आणि पुरस्कार</p>
-                        </div>
+                <!-- Section Header -->
+                <div class="text-center mb-12 md:mb-16">
+                    <div class="inline-block">
+                        <span class="bg-gradient-to-r from-primary-600 to-primary-700 text-white px-6 py-2 rounded-full text-sm md:text-base font-bold shadow-lg mb-4 inline-block">
+                            🤝 Our Partners
+                        </span>
                     </div>
+                    <h2 class="text-3xl md:text-5xl font-black gradient-text-modern mb-3 md:mb-4 py-2">
+                        ${eventPartners.sectionTitle}
+                    </h2>
+                    <p class="text-lg md:text-xl text-primary-600 font-medium">
+                        ${eventPartners.sectionSubtitle}
+                    </p>
+                    <div class="w-24 h-1.5 bg-gradient-to-r from-primary-500 to-primary-600 mx-auto rounded-full mt-4"></div>
                 </div>
+                
+                <!-- Partners Grid -->
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 max-w-6xl mx-auto">
+                    ${partnerCards}
+                </div>
+                
+                <!-- Thank You Note removed -->
             </div>
         </section>
     `;

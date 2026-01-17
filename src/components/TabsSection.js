@@ -14,41 +14,52 @@ import { siteContent } from '../data/content.js';
 function generateSponsorsContent() {
     const { sponsors } = siteContent.tabs;
 
-    // Horizontal scrollable carousel for sponsors
-    const sponsorCards = sponsors.items.map(sponsor => `
-        <div class="glass-card rounded-2xl overflow-hidden p-3 group flex-shrink-0 w-72 md:w-80">
-            <div class="video-container rounded-xl overflow-hidden bg-black/5">
-                 <iframe 
-                    src="https://www.youtube.com/embed/${sponsor.videoId}?rel=0"
-                    title="${sponsor.name}"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen
-                    loading="lazy"
-                ></iframe>
+    // Grid layout for sponsors - 4 in a row on desktop with equal heights
+    const sponsorCards = sponsors.items.map(sponsor => {
+        // Encode description for safe HTML attribute storage
+        const encodedDescription = sponsor.description ? encodeURIComponent(sponsor.description) : '';
+
+        const knowMoreBtn = (sponsor.posterUrl || sponsor.description) ? `
+            <button 
+                class="sponsor-details-btn px-4 py-2 rounded-full bg-primary-600 text-white hover:bg-primary-700 transition-colors text-xs md:text-sm font-semibold"
+                data-poster="${sponsor.posterUrl || ''}"
+                data-name="${sponsor.name}"
+                data-description="${encodedDescription}"
+            >
+                Know More
+            </button>
+        ` : '<div class="h-9"></div>'; // Placeholder to maintain equal heights
+
+        return `
+            <div class="glass-card rounded-2xl overflow-hidden p-3 flex flex-col h-full">
+                <!-- YouTube Shorts Aspect Ratio Container (9:16) -->
+                <div class="relative w-full rounded-xl overflow-hidden bg-gradient-to-br from-primary-100 to-primary-50" style="padding-bottom: 177.78%;">
+                    <iframe 
+                        class="absolute top-0 left-0 w-full h-full"
+                        src="https://www.youtube.com/embed/${sponsor.videoId}?rel=0"
+                        title="${sponsor.name}"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen
+                        loading="lazy"
+                        style="border: none;"
+                    ></iframe>
+                </div>
+                <!-- Card Footer with Fixed Height -->
+                <div class="p-3 md:p-4 flex flex-col items-center justify-between gap-2 flex-grow">
+                    <h4 class="font-bold text-primary-900 text-center text-xs md:text-sm leading-tight min-h-[2.5rem] flex items-center justify-center">${sponsor.name}</h4>
+                    ${knowMoreBtn}
+                </div>
             </div>
-            <div class="p-4 flex flex-col items-center gap-3">
-                <h4 class="font-bold text-primary-900 text-center">${sponsor.name}</h4>
-                <button 
-                    class="sponsor-details-btn px-5 py-2 rounded-full bg-primary-600 text-white hover:bg-primary-700 transition-colors text-sm font-semibold"
-                    data-poster="${sponsor.posterUrl}"
-                    data-name="${sponsor.name}"
-                >
-                    Know More
-                </button>
-            </div>
-        </div>
-    `).join('');
+        `;
+    }).join('');
 
     return `
-        <div class="flex gap-6 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide" style="-webkit-overflow-scrolling: touch;">
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-5 max-w-6xl mx-auto">
             ${sponsorCards}
         </div>
-        <style>
-            .scrollbar-hide::-webkit-scrollbar { display: none; }
-            .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
-        </style>
     `;
 }
+
 
 function generateCauseContent() {
     const { cause } = siteContent.tabs;
@@ -105,7 +116,7 @@ function generateHistoryContent() {
     `).join('');
 
     return `
-        <div class="max-w-6xl mx-auto text-center">
+        <div class="max-w-6xl mx-auto text-center pt-8 md:pt-12">
             <h3 class="text-3xl font-bold text-primary-900 mb-2">${history.title}</h3>
             <p class="text-primary-600 mb-8">${history.description}</p>
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
@@ -192,12 +203,36 @@ export function initTabInteractions() {
         if (e.target.closest('.sponsor-details-btn')) {
             const btn = e.target.closest('.sponsor-details-btn');
             const posterUrl = btn.dataset.poster;
+            const sponsorName = btn.dataset.name;
+            const description = btn.dataset.description ? decodeURIComponent(btn.dataset.description) : '';
+
+            // Format description with line breaks
+            const formattedDescription = description.split('\n').map(line =>
+                line.trim() ? `<p class="mb-2">${line}</p>` : '<br>'
+            ).join('');
+
+            // Build modal content
+            const imageSection = posterUrl ? `
+                <div class="w-full max-h-[40vh] overflow-hidden bg-gradient-to-br from-primary-50 to-white">
+                    <img src="${posterUrl}" alt="${sponsorName}" class="w-full h-full object-contain">
+                </div>
+            ` : '';
+
+            const descriptionSection = description ? `
+                <div class="p-6 md:p-8 overflow-y-auto max-h-[50vh] bg-white">
+                    <h3 class="text-xl md:text-2xl font-bold text-primary-700 mb-4 text-center">${sponsorName}</h3>
+                    <div class="text-primary-800 text-sm md:text-base leading-relaxed whitespace-pre-line">
+                        ${formattedDescription}
+                    </div>
+                </div>
+            ` : '';
 
             modalContainer.innerHTML = `
-                <div class="modal-overlay backdrop-blur-md" id="sponsor-modal">
-                    <div class="modal-content glass-panel p-0 overflow-hidden shadow-2xl scale-95 opacity-0 animate-[popup_0.3s_ease-out_forwards]">
-                        <button class="modal-close bg-white text-primary-600 hover:bg-primary-50 top-4 right-4 shadow-lg" id="close-modal">&times;</button>
-                        <img src="${posterUrl}" class="w-full max-h-[85vh] object-contain bg-white">
+                <div class="modal-overlay backdrop-blur-md" id="sponsor-modal" style="padding: 20px; overflow-y: auto;">
+                    <div class="modal-content glass-panel p-0 overflow-hidden shadow-2xl scale-95 opacity-0 animate-[popup_0.3s_ease-out_forwards] max-w-2xl w-full mx-auto my-auto rounded-2xl">
+                        <button class="modal-close bg-white text-primary-600 hover:bg-primary-50 top-4 right-4 shadow-lg z-20" id="close-modal">&times;</button>
+                        ${imageSection}
+                        ${descriptionSection}
                     </div>
                 </div>
                 <style>

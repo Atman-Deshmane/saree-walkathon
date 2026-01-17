@@ -39,10 +39,10 @@ function renderApp() {
         ${renderNavbar()}
         ${renderHero()}
         ${renderIncentives()}
-        ${renderHighlights()}
         ${renderCelebrity()}
-        ${renderRegistration()}
+        ${renderHighlights()}
         ${renderTabs()}
+        ${renderRegistration()}
         ${renderNotableWomen()}
         ${renderFooter()}
     `;
