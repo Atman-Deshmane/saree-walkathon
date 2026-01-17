@@ -14,51 +14,83 @@ import { siteContent } from '../data/content.js';
 function generateSponsorsContent() {
     const { sponsors } = siteContent.tabs;
 
+    // Partner type mapping based on sponsor names
+    const partnerTypes = {
+        "The Real Estate Mall": { type: "🏆 Title Partner", color: "from-amber-500 to-yellow-400" },
+        "अभय फार्मसी": { type: "💊 Event Partner", color: "from-green-500 to-emerald-400" },
+        "महालक्ष्मी लॅज व फंक्शन हॉल आणि महालक्ष्मी हायवे सर्व्हिसेस": { type: "🏨 Event Partner", color: "from-blue-500 to-cyan-400" },
+        "ENERZAL": { type: "⚡ Energy Partner", color: "from-orange-500 to-red-400" },
+        "RAJGURU IVF & Fertility Center": { type: "🏥 Event Partner", color: "from-pink-500 to-rose-400" },
+        "Brooke Hygiene": { type: "🌸 Event Partner", color: "from-purple-500 to-violet-400" },
+        "समता ब्युटी शॉपी": { type: "💄 Event Partner", color: "from-fuchsia-500 to-pink-400" }
+    };
+
     // Grid layout for sponsors - 4 in a row on desktop with equal heights
     const sponsorCards = sponsors.items.map(sponsor => {
         // Encode description for safe HTML attribute storage
         const encodedDescription = sponsor.description ? encodeURIComponent(sponsor.description) : '';
 
+        // Get partner type info
+        const partnerInfo = partnerTypes[sponsor.name] || { type: "✨ Partner", color: "from-primary-500 to-primary-400" };
+
         const knowMoreBtn = (sponsor.posterUrl || sponsor.description) ? `
             <button 
-                class="sponsor-details-btn px-4 py-2 rounded-full bg-primary-600 text-white hover:bg-primary-700 transition-colors text-xs md:text-sm font-semibold"
+                class="sponsor-details-btn w-full px-4 py-2.5 rounded-xl bg-white border-2 border-primary-200 text-primary-700 hover:bg-primary-600 hover:text-white hover:border-primary-600 transition-all duration-300 text-xs md:text-sm font-bold shadow-sm hover:shadow-lg transform hover:-translate-y-0.5"
                 data-poster="${sponsor.posterUrl || ''}"
                 data-name="${sponsor.name}"
                 data-description="${encodedDescription}"
             >
-                Know More
+                📖 Know More
             </button>
-        ` : '<div class="h-9"></div>'; // Placeholder to maintain equal heights
+        ` : '<div class="h-10"></div>'; // Placeholder to maintain equal heights
 
         return `
-            <div class="glass-card rounded-2xl overflow-hidden p-3 flex flex-col h-full">
-                <!-- YouTube Shorts Aspect Ratio Container (9:16) -->
-                <div class="relative w-full rounded-xl overflow-hidden bg-gradient-to-br from-primary-100 to-primary-50" style="padding-bottom: 177.78%;">
-                    <iframe 
-                        class="absolute top-0 left-0 w-full h-full"
-                        src="https://www.youtube.com/embed/${sponsor.videoId}?rel=0"
-                        title="${sponsor.name}"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowfullscreen
-                        loading="lazy"
-                        style="border: none;"
-                    ></iframe>
-                </div>
-                <!-- Card Footer with Fixed Height -->
-                <div class="p-3 md:p-4 flex flex-col items-center justify-between gap-2 flex-grow">
-                    <h4 class="font-bold text-primary-900 text-center text-xs md:text-sm leading-tight min-h-[2.5rem] flex items-center justify-center">${sponsor.name}</h4>
-                    ${knowMoreBtn}
+            <div class="group relative pt-4">
+                <div class="glass-card rounded-2xl p-2 md:p-3 flex flex-col h-full border border-white/50 hover:border-primary-200 transition-all duration-300 hover:shadow-xl relative">
+                    <!-- Partner Type Badge -->
+                    <div class="absolute -top-2 left-1/2 transform -translate-x-1/2 z-10">
+                        <span class="px-3 py-1 bg-gradient-to-r ${partnerInfo.color} text-white text-[10px] md:text-xs font-bold rounded-full shadow-lg whitespace-nowrap">
+                            ${partnerInfo.type}
+                        </span>
+                    </div>
+                    
+                    <!-- YouTube Shorts Aspect Ratio Container (9:16) -->
+                    <div class="relative w-full rounded-xl overflow-hidden bg-gradient-to-br from-primary-100 to-primary-50 mt-3" style="padding-bottom: 177.78%;">
+                        <iframe 
+                            class="absolute top-0 left-0 w-full h-full"
+                            src="https://www.youtube.com/embed/${sponsor.videoId}?rel=0"
+                            title="${sponsor.name}"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen
+                            loading="lazy"
+                            style="border: none;"
+                        ></iframe>
+                    </div>
+                    
+                    <!-- Card Footer with Enhanced Title -->
+                    <div class="p-2 md:p-3 flex flex-col items-center gap-2 flex-grow">
+                        <!-- Sponsor Name with Decorative Background -->
+                        <div class="w-full text-center py-2 px-2 bg-gradient-to-r from-primary-50 via-white to-primary-50 rounded-lg border border-primary-100">
+                            <h4 class="font-black text-primary-800 text-xs md:text-sm leading-tight">${sponsor.name}</h4>
+                        </div>
+                        
+                        <!-- Know More Button -->
+                        <div class="w-full mt-auto">
+                            ${knowMoreBtn}
+                        </div>
+                    </div>
                 </div>
             </div>
         `;
     }).join('');
 
     return `
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-5 max-w-6xl mx-auto">
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 max-w-6xl mx-auto pt-6 md:pt-8">
             ${sponsorCards}
         </div>
     `;
 }
+
 
 
 function generateCauseContent() {
@@ -130,7 +162,7 @@ export function renderTabs() {
     const { sponsors, cause, history } = siteContent.tabs;
 
     return `
-        <section id="tabs-section" class="py-16 md:py-24 bg-white/50">
+        <section id="tabs-section" class="py-16 md:py-24 bg-white/50 pt-20 md:pt-28">
             <div class="container">
                 <!-- Floating Pills Container -->
                 <div class="flex justify-center mb-8 md:mb-12">

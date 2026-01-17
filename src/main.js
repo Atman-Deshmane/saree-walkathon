@@ -40,8 +40,8 @@ function renderApp() {
         ${renderHero()}
         ${renderIncentives()}
         ${renderCelebrity()}
-        ${renderHighlights()}
         ${renderTabs()}
+        ${renderHighlights()}
         ${renderRegistration()}
         ${renderNotableWomen()}
         ${renderFooter()}

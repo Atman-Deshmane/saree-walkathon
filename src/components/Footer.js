@@ -12,14 +12,14 @@ export function renderFooter() {
     const { footer } = siteContent;
 
     const partnerLogos = footer.partners.organizations.map(org => `
-        <div class="group flex flex-col items-center justify-center p-6 bg-white/50 hover:bg-white rounded-2xl transition-all duration-300">
+        <div class="group flex flex-col items-center justify-center p-6 bg-white rounded-2xl shadow-sm h-full">
             <img 
                 src="${org.logo}" 
                 alt="${org.name}"
-                class="h-12 w-auto object-contain mb-3 opacity-70 group-hover:opacity-100 transition-opacity"
+                class="h-14 w-auto object-contain mb-3"
                 loading="lazy"
             >
-            <p class="text-xs text-primary-400 group-hover:text-primary-800 font-medium text-center">${org.name}</p>
+            <p class="text-xs text-primary-800 font-bold text-center leading-tight">${org.name}</p>
         </div>
     `).join('');
 

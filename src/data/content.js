@@ -66,7 +66,7 @@ export const siteContent = {
                 color: "from-blue-500 to-blue-600"
             },
             {
-                category: "Media Partner",
+                category: "Radio Partner",
                 name: "Radio Terana",
                 logo: "src/img/radio terana.png",
                 color: "from-purple-500 to-purple-600"
